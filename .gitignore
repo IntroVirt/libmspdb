@@ -1,0 +1,52 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# VS Code
+.vscode
+
+# Deb build artifacts
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/libmspdb-dev.substvars
+debian/libmspdb-dev/
+debian/libmspdb1.substvars
+debian/libmspdb1/
+debian/files
+debian/tmp/
+debian/libmspdb-dev.debhelper.log
+debian/libmspdb1-dbg.debhelper.log
+debian/libmspdb1-dbg.substvars
+debian/libmspdb1-dbg/
+debian/libmspdb1.debhelper.log
+obj-x86_64-linux-gnu
+

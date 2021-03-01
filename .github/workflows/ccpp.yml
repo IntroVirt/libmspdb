@@ -1,0 +1,24 @@
+name: CI Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Debug:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake libcurl4-gnutls-dev libboost-filesystem-dev ninja-build
+      shell: bash
+    - name: Validate Debug Build
+      run: |
+        cd build
+        cmake -GNinja ..
+        ninja
+      shell: bash

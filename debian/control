@@ -1,0 +1,50 @@
+Source: libmspdb
+Section: devel
+Priority: optional
+Maintainer: Stephen Pape <srpape@gmail.com>
+Build-Depends: cmake,
+               libcurl4-openssl-dev,
+               libboost-dev,
+               debhelper (>= 8.9.7),
+               linux-libc-dev (>= 2.6.27) [i386]
+Standards-Version: 4.4.0
+Homepage: https://github.com/srpape/libmspdb
+Vcs-Browser: https://github.com/srpape/libmspdb
+Vcs-Git: https://github.com/srpape/libmspdb.git
+
+Package: libmspdb-dev
+Section: libdevel
+Architecture: any
+Depends: libc6-dev,
+         libmspdb1 (= ${binary:Version}),
+         ${misc:Depends}
+Multi-Arch: same
+Description: development library and header files for libmspdb1
+ Headers, static libraries, and documentation for the libmspdb library.
+ .
+ libmspb provides a framework for reading Microsoft Program Database files.
+
+Package: libmspdb1
+Section: libs
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends},
+         libcurl4,
+         ${shlibs:Depends}
+Multi-Arch: same
+Description: library for Microsoft Program Database files
+ libmspb provides a framework for reading Microsoft Program Database files.
+
+Package: libmspdb1-dbg
+Section: debug
+Priority: optional
+Architecture: any
+Depends: libmspdb1 (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends}
+Multi-Arch: same
+Description: debugging symbols for libmspdb1
+ libmspb provides a framework for reading Microsoft Program Database files.
+ .
+ This package contains the debugging symbols for the libmspdb library.
+
