@@ -35,16 +35,3 @@ Multi-Arch: same
 Description: library for Microsoft Program Database files
  libmspb provides a framework for reading Microsoft Program Database files.
 
-Package: libmspdb1-dbg
-Section: debug
-Priority: optional
-Architecture: any
-Depends: libmspdb1 (= ${binary:Version}),
-         ${misc:Depends},
-         ${shlibs:Depends}
-Multi-Arch: same
-Description: debugging symbols for libmspdb1
- libmspb provides a framework for reading Microsoft Program Database files.
- .
- This package contains the debugging symbols for the libmspdb library.
-

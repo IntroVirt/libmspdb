@@ -1,9 +1,4 @@
 #!/usr/bin/make -f
 
-BUILDDIR = build_dir
-
 %:
 	dh $@
-
-override_dh_strip-arch:
-	dh_strip --dbg-package=libmspdb1-dbg
