@@ -17,10 +17,10 @@ ADD_LIBRARY(mspdb SHARED ${SOURCES})
 TARGET_LINK_LIBRARIES(mspdb ${CURL_LIBRARIES} stdc++fs)
 
  # I only have confidence in LTO on gcc-9.1+
-IF (CMAKE_BUILD_TYPE STREQUAL "Release")
+ IF (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
   IF (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     IF (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 9.1)
-      MESSAGE(STATUS "Enabling link-time optimizations")
+      MESSAGE(STATUS "Enabling link-time optimizations for libmspdb")
       SET_PROPERTY(TARGET mspdb PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
     ENDIF()
   ENDIF()
