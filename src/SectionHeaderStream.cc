@@ -20,6 +20,7 @@
 #include "builtin_expect.hh"
 #include "portable_endian.hh"
 
+#include <stdexcept>
 #include <vector>
 
 namespace mspdb {
