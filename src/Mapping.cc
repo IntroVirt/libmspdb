@@ -18,6 +18,8 @@
 
 #include "builtin_expect.hh"
 
+#include <stdexcept>
+
 #include <sys/mman.h>
 
 namespace mspdb {
