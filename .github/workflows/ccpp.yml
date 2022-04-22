@@ -2,23 +2,73 @@ name: CI Tests
 
 on:
   push:
-    branches: [ main ]
+    paths-ignore: ['**.md']
   pull_request:
-    branches: [ main ]
+    paths-ignore: ['**.md']
 
 jobs:
+  Clang_Format:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format
+        shell: bash
+      - name: Validate Source Formatting
+        run: |
+          find . -name '*.hh' -o -iname '*.cc' | xargs clang-format -i -style=file
+          if [[ -n $(git diff) ]]; then
+            echo "You must run make format before submitting a pull request"
+            echo ""
+            git diff
+            exit -1
+          fi
+        shell: bash
+
+  Release:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake libcurl4-gnutls-dev libboost-filesystem-dev ninja-build
+        shell: bash
+      - name: Validate Release Build
+        run: |
+          cd build
+          cmake -GNinja -DCMAKE_BUILD_TYPE=Release ..
+          ninja
+          ninja package
+          mkdir release && mv ./*.deb release
+        shell: bash
+      - name: Archive debian packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: libmspdb_release
+          path: build/release/*.deb
+
   Debug:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y cmake libcurl4-gnutls-dev libboost-filesystem-dev ninja-build
-      shell: bash
-    - name: Validate Debug Build
-      run: |
-        cd build
-        cmake -GNinja ..
-        ninja
-      shell: bash
+      - uses: actions/checkout@v2
+      - name: Setup
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake libcurl4-gnutls-dev libboost-filesystem-dev ninja-build
+        shell: bash
+      - name: Validate Debug Build
+        run: |
+          cd build
+          cmake -GNinja ..
+          ninja
+          ninja package
+          mkdir debug && mv *.deb debug/
+        shell: bash
+      - name: Archive debian packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: libmspdb_debug
+          path: build/debug/*.deb
