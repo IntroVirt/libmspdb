@@ -42,13 +42,12 @@ jobs:
           cmake -GNinja -DCMAKE_BUILD_TYPE=Release ..
           ninja
           ninja package
-          mkdir release && mv ./*.deb release
         shell: bash
       - name: Archive debian packages
         uses: actions/upload-artifact@v3
         with:
           name: libmspdb_release
-          path: build/release/*.deb
+          path: build/*.deb
 
   Debug:
     runs-on: ubuntu-20.04
@@ -62,13 +61,12 @@ jobs:
       - name: Validate Debug Build
         run: |
           cd build
-          cmake -GNinja ..
+          cmake -GNinja -DCMAKE_BUILD_TYPE=Debug ..
           ninja
           ninja package
-          mkdir debug && mv *.deb debug/
         shell: bash
       - name: Archive debian packages
         uses: actions/upload-artifact@v3
         with:
           name: libmspdb_debug
-          path: build/debug/*.deb
+          path: build/*.deb
