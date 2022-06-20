@@ -23,8 +23,8 @@ jobs:
           cmake -GNinja -DCMAKE_BUILD_TYPE=Release ..
           ninja
           ninja package
-          zip --verbose --junk-paths libmspdb-${{ github.ref_name }}.zip ./*.deb
-          ls -la libmspdb-${{ github.ref_name }}.zip
+          zip --verbose --junk-paths libmspdb.zip ./*.deb
+          ls -la libmspdb.zip
         shell: bash
       - name: Create Release
         id: create_release
@@ -43,6 +43,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/libmspdb-${{ github.ref_name }}.zip
-          asset_name: libmspdb-${{ github.ref_name }}.zip
+          asset_path: ./build/libmspdb.zip
+          asset_name: libmspdb.zip
           asset_content_type: application/zip
