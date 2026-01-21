@@ -7,8 +7,9 @@ on:
     paths-ignore: ['**.md']
 
 jobs:
-  Clang_Format:
-    runs-on: ubuntu-20.04
+  # Validate code formatting
+  quality:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup
@@ -27,46 +28,43 @@ jobs:
           fi
         shell: bash
 
-  Release:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake libcurl4-gnutls-dev libboost-filesystem-dev ninja-build
-        shell: bash
-      - name: Validate Release Build
-        run: |
-          cd build
-          cmake -GNinja -DCMAKE_BUILD_TYPE=Release ..
-          ninja
-          ninja package
-        shell: bash
-      - name: Archive debian packages
-        uses: actions/upload-artifact@v3
-        with:
-          name: libmspdb_release
-          path: build/*.deb
+  # Tests all build scenarios
+  build:
+    runs-on: ${{ matrix.os }}
 
-  Debug:
-    runs-on: ubuntu-20.04
+    # Test builds for several Ubuntus with both release and debug
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, ubuntu-latest]
+        build_type: [Release, Debug]
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup
+      - uses: actions/checkout@v4
+
+      # Install build deps
+      - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake libcurl4-gnutls-dev libboost-filesystem-dev ninja-build
         shell: bash
-      - name: Validate Debug Build
+
+      # Run the build
+      - name: Validate ${{ matrix.build_type }} Build
         run: |
           cd build
-          cmake -GNinja -DCMAKE_BUILD_TYPE=Debug ..
-          ninja
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
           ninja package
         shell: bash
+
+      # Test the build
+      - name: Run tests
+        run: |
+          echo "TODO! $(pwd)"
+
+      # Upload build .debs
       - name: Archive debian packages
         uses: actions/upload-artifact@v3
         with:
-          name: libmspdb_debug
+          name: libmspdb_${{ matrix.build_type }}
           path: build/*.deb
