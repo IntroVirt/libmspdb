@@ -11,7 +11,7 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup
         run: |
           sudo apt-get update
@@ -64,7 +64,7 @@ jobs:
 
       # Upload build .debs
       - name: Archive debian packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: libmspdb_${{ matrix.build_type }}
           path: build/*.deb
