@@ -21,7 +21,7 @@ using namespace mspdb;
 using namespace std;
 
 int main() {
-    PDB pdb("./pdbstore/win32u.pdb/C0685FE74DEEA4BEC6F9CC52FEAC5D231/win32u.pdb");
+    PDB pdb("./pdbstore/ntdll.pdb/08A413EE85E91D0377BA33DC3A2641941/ntdll.pdb");
 
     cout << "BlockSize: " << pdb.block_size() << '\n';
     cout << "NumBlocks: " << pdb.num_blocks() << '\n';
