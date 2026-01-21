@@ -62,7 +62,12 @@ jobs:
       # Test the build
       - name: Run tests
         run: |
-          echo "TODO! $(pwd)"
+          cd build/tests
+          ./pdbfetch
+          ./pdbdump
+          ./pdbtypes
+          ./pdbtypetree
+          ./pdbwrapper
 
       # Upload build .debs
       - name: Archive debian packages

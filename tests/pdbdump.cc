@@ -21,7 +21,7 @@ using namespace mspdb;
 using namespace std;
 
 int main() {
-    PDB pdb("/home/papes/git/libmspdb/ntkrnlmp.pdb");
+    PDB pdb("./pdbstore/win32u.pdb/C0685FE74DEEA4BEC6F9CC52FEAC5D231/win32u.pdb");
 
     cout << "BlockSize: " << pdb.block_size() << '\n';
     cout << "NumBlocks: " << pdb.num_blocks() << '\n';
