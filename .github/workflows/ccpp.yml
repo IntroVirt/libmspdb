@@ -64,11 +64,11 @@ jobs:
       - name: Run tests
         run: |
           cd build/tests
-          ./pdbfetch
-          ./pdbdump
-          ./pdbtypes
-          ./pdbtypetree
-          ./pdbwrapper
+          ./pdbfetch > /dev/null
+          ./pdbdump > /dev/null
+          ./pdbtypes > /dev/null
+          ./pdbtypetree > /dev/null
+          ./pdbwrapper > /dev/null
 
       # Upload build .debs
       - name: Archive debian packages
