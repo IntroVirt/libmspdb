@@ -291,7 +291,7 @@ void TypeContainer::write_member(const LF_MEMBER& lfMember) const {
 }
 
 int main() {
-    PDB pdb("/home/papes/git/libmspdb/ntkrnlmp.pdb");
+    PDB pdb("./pdbstore/ntdll.pdb/08A413EE85E91D0377BA33DC3A2641941/ntdll.pdb");
     const auto& tpi = pdb.stream_directory().type_info_stream();
 
     for (const LF_STRUCTURE& lfStruct : tpi.structs()) {

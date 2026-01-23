@@ -34,7 +34,7 @@ ADD_SUBDIRECTORY(tests)
 # Format target
 ADD_CUSTOM_TARGET(
      format
-     COMMAND find ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/include -name '*.hh' -o -iname '*.cc' | xargs clang-format -i -style=file
+     COMMAND find ${PROJECT_SOURCE_DIR}/tests ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/include -name '*.hh' -o -iname '*.cc' | xargs clang-format -i -style=file
 )
 
 # Install rule for include headers

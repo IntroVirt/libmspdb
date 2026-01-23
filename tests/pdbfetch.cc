@@ -21,5 +21,5 @@ using namespace mspdb;
 
 int main() {
     PDBStore store("./pdbstore/");
-    auto pdb = store.open_pdb("win32u.pdb", "C0685FE74DEEA4BEC6F9CC52FEAC5D231");
+    auto pdb = store.open_pdb("ntdll.pdb", "08A413EE85E91D0377BA33DC3A2641941");
 }

@@ -1,0 +1,78 @@
+name: CI Tests
+
+on:
+  pull_request:
+    paths-ignore: ['**.md']
+    branches:
+      - main
+
+jobs:
+  # Validate code formatting
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format
+        shell: bash
+      - name: Validate Source Formatting
+        run: |
+          mapfile -t source < <(find . -iname "*.cc")
+          mapfile -t headers < <(find . -iname "*.hh")
+          code=("${source[@]}" "${headers[@]}")
+          if ! clang-format -style=file "${code[@]}" -i -Werror --dry-run; then
+              echo "You must run make format before submitting a pull request"
+              echo ""
+              git diff
+              exit 1
+          fi
+          echo "Your source is formatted real good!"
+        shell: bash
+
+  # Tests all build scenarios
+  build:
+    runs-on: ${{ matrix.os }}
+
+    # Test builds for several Ubuntus with both release and debug
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+        build_type: [Release, Debug]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Install build deps
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake libcurl4-gnutls-dev libboost-filesystem-dev ninja-build
+        shell: bash
+
+      # Run the build
+      - name: Validate ${{ matrix.build_type }} Build
+        run: |
+          cd build
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ..
+          ninja package
+        shell: bash
+
+      # Test the build
+      - name: Run tests
+        run: |
+          cd build/tests
+          ./pdbfetch > /dev/null
+          ./pdbdump > /dev/null
+          ./pdbtypes > /dev/null
+          ./pdbtypetree > /dev/null
+          ./pdbwrapper > /dev/null
+
+      # Upload build .debs
+      - name: Archive debian packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: libmspdb_${{ matrix.os }}_${{ matrix.build_type }}
+          path: build/*.deb
