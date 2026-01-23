@@ -65,7 +65,7 @@ jobs:
           cd ./all-debs
           for os in libmspdb_*_Release; do
               echo "Zipping ${os}"
-              zip "${os}.zip" "${os}"
+              zip -r "${os}.zip" "${os}"
           done
 
           echo "Uploading release assets"
