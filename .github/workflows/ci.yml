@@ -5,6 +5,9 @@ on:
     paths-ignore: ['**.md']
     branches:
       - main
+  push:
+    branches:
+      - main
 
 jobs:
   # Validate code formatting
