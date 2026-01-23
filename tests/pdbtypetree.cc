@@ -32,7 +32,7 @@ void recurse(const LF_TYPE& type, const std::string& prefix = "") {
     if (std::find(type_stack.begin(), type_stack.end(), &type) == type_stack.end()) {
         type_stack.push_back(&type);
     } else {
-        std::cout << to_string(type.type()) <<"(stopping here - infinite recursive type)\n";
+        std::cout << to_string(type.type()) << "(stopping here - infinite recursive type)\n";
         return;
     }
     std::cout << to_string(type.type());
@@ -63,7 +63,8 @@ void recurse(const LF_TYPE& type, const std::string& prefix = "") {
         if (std::find(type_stack.begin(), type_stack.end(), &lfType) == type_stack.end()) {
             type_stack.push_back(&lfType);
         } else {
-            std::cout << to_string(type.type()) <<"(stopping here - infinite recursive modifier)\n";
+            std::cout << to_string(type.type())
+                      << "(stopping here - infinite recursive modifier)\n";
             return;
         }
 
@@ -82,7 +83,7 @@ void recurse(const LF_TYPE& type, const std::string& prefix = "") {
         if (std::find(type_stack.begin(), type_stack.end(), &lfType) == type_stack.end()) {
             type_stack.push_back(&lfType);
         } else {
-            std::cout << to_string(type.type()) <<"(stopping here - infinite recursive pointer)\n";
+            std::cout << to_string(type.type()) << "(stopping here - infinite recursive pointer)\n";
             return;
         }
         recurse(lfType, prefix);
