@@ -46,13 +46,14 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       # Download the built debs from the build job
       - name: Download Release Artifacts
         uses: actions/download-artifact@v4
         with:
           path: all-debs
           pattern: libmspdb_*_Release
-          merge-multiple: true
 
       # Create and upload the debs to a new release
       - name: Upload Release Asset
