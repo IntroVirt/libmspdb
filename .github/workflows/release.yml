@@ -72,5 +72,5 @@ jobs:
           gh release create ${{ github.ref_name }} \
             --title "Release ${{ github.ref_name }}" \
             --draft \
-            ./all-debs/*.zip
+            *.zip
         shell: bash
