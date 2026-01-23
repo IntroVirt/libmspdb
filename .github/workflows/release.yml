@@ -60,7 +60,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          la -alh ./all-debs
+          ls -alh ./all-debs
           gh release create ${{ github.ref_name }} \
             --title "Release ${{ github.ref_name }}" \
             --draft \
