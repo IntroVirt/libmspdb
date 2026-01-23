@@ -1,9 +1,11 @@
 # libmspdb
 
-## Description
-
+[![Discord](https://dcbadge.limes.pink/api/server/https://discord.gg/YSdGvAhSmH?style=flat)](https://discord.gg/YSdGvAhSmH)
 [![CI Tests](https://github.com/IntroVirt/libmspdb/actions/workflows/ci.yml/badge.svg)](https://github.com/IntroVirt/libmspdb/actions/workflows/ci.yml)
 [![Create Release](https://github.com/IntroVirt/libmspdb/actions/workflows/release.yml/badge.svg)](https://github.com/IntroVirt/libmspdb/actions/workflows/release.yml)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+## Description
 
 **libmspdb** is a parsing library for Microsoft Program Database (PDB) files. This library is primarily used by [IntroVirt](https://github.com/IntroVirt/IntroVirt) to parse memory in Windows virtual machines.
 
@@ -11,13 +13,13 @@
 
 ### Install the latest release
 
-Pre-built debian packages can be downloaded and installed from the latest [libmspdb.zip](https://github.com/IntroVirt/libmspdb/releases/latest/download/libmspdb.zip) release. For example, with:
+Pre-built debian packages can be downloaded and installed from the latest [release](https://github.com/IntroVirt/libmspdb/releases/latest). For example, with:
 
 ```bash
 mkdir libmspdb_pkg && cd libmspdb_pkg
-wget https://github.com/IntroVirt/libmspdb/releases/latest/download/libmspdb.zip
-unzip libmspdb.zip
-sudo apt install ./*.deb
+wget https://github.com/IntroVirt/libmspdb/releases/latest/download/libmspdb_ubuntu-$(lsb_release -sr)_Release.zip
+unzip libmspdb_ubuntu-$(lsb_release -sr)_Release.zip
+sudo apt install ./libmspdb_ubuntu-$(lsb_release -sr)_Release/*.deb
 ```
 
 ## Build and install from source
@@ -29,7 +31,7 @@ sudo apt-get install -y cmake libcurl4-openssl-dev libboost-dev git
 git clone https://github.com/IntroVirt/libmspdb.git
 cd libmspdb/build/
 cmake ..
-make -j
+make -j$(nproc)
 ```
 
 Debian packages can then be built and installed (recommended):
