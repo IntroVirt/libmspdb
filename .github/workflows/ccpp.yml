@@ -1,10 +1,10 @@
 name: CI Tests
 
 on:
-  push:
-    paths-ignore: ['**.md']
   pull_request:
     paths-ignore: ['**.md']
+    branches:
+      - main
 
 jobs:
   # Validate code formatting
