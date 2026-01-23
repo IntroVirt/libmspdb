@@ -40,6 +40,8 @@ std::string get_type(const LF_TYPE& lfType) {
         return get_type(static_cast<const LF_BITFIELD&>(lfType).base_type());
     case LEAF_TYPE::LF_ARRAY:
         return get_type(static_cast<const LF_ARRAY&>(lfType).element_type());
+    case LEAF_TYPE::LF_UNION:
+        return static_cast<const LF_UNION&>(lfType).name();
     default:
         throw pdb_exception("Unhandled type: " + to_string(lfType.type()));
     }
@@ -51,15 +53,20 @@ void write_wrapper(const T& lfStruct) {
     std::cout << "public:\n";
 
     for (const LF_MEMBER& member : lfStruct.field_list()) {
-        std::cout << "    virtual " << get_type(member.index()) << " " << member.name() << "() {\n";
-        std::cout << std::hex;
-        switch (member.index().type()) {
-        default:
-            std::cout << "        return *reinterpret_cast<const " << get_type(member.index())
-                      << "*>(buffer + 0x" << member.offset() << ");\n";
+        try {
+            auto type = get_type(member.index()); // May throw
+            std::cout << "    virtual " << type << " " << member.name() << "() {\n";
+            std::cout << std::hex;
+            switch (member.index().type()) {
+            default:
+                std::cout << "        return *reinterpret_cast<const " << type << "*>(buffer + 0x"
+                          << member.offset() << ");\n";
+            }
+            std::cout << std::dec;
+            std::cout << "    };\n";
+        } catch (const pdb_exception& e) {
+            std::cerr << "Skipping member " << member.name() << ": " << e.what() << "\n";
         }
-        std::cout << std::dec;
-        std::cout << "    };\n";
     }
 
     std::cout << "};\n";
