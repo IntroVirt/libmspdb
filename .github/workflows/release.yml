@@ -61,8 +61,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          ls -lah ./all-debs
           cd ./all-debs
-          for os in $(ls libmspdb_*_Release); do
+          for os in libmspdb_*_Release; do
               echo "Zipping ${os}"
               zip "${os}.zip" "${os}"
           done
