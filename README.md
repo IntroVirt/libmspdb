@@ -2,7 +2,8 @@
 
 ## Description
 
-![CI Tests](https://github.com/IntroVirt/libmspdb/actions/workflows/ccpp.yml/badge.svg)
+[![CI Tests](https://github.com/IntroVirt/libmspdb/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/IntroVirt/libmspdb/actions/workflows/ci.yml)
+[![Create Release](https://github.com/IntroVirt/libmspdb/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/IntroVirt/libmspdb/actions/workflows/release.yml)
 
 **libmspdb** is a parsing library for Microsoft Program Database (PDB) files. This library is primarily used by [IntroVirt](https://github.com/IntroVirt/IntroVirt) to parse memory in Windows virtual machines.
 

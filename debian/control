@@ -8,9 +8,9 @@ Build-Depends: cmake,
                debhelper (>= 8.9.7),
                linux-libc-dev (>= 2.6.27) [i386]
 Standards-Version: 4.4.0
-Homepage: https://github.com/srpape/libmspdb
-Vcs-Browser: https://github.com/srpape/libmspdb
-Vcs-Git: https://github.com/srpape/libmspdb.git
+Homepage: https://github.com/IntroVirt/libmspdb
+Vcs-Browser: https://github.com/IntroVirt/libmspdb
+Vcs-Git: https://github.com/IntroVirt/libmspdb.git
 
 Package: libmspdb-dev
 Section: libdevel
