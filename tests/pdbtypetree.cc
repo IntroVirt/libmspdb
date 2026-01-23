@@ -24,6 +24,8 @@
 
 using namespace mspdb;
 
+// Used to prevent infinity. If the thing we're about to recurse into is already
+// in the stack of things we're recursed into, then we don't want to do that.
 static std::vector<const LF_TYPE*> type_stack;
 
 void recurse(const LF_TYPE& type, const std::string& prefix = "") {
@@ -76,8 +78,6 @@ void recurse(const LF_TYPE& type, const std::string& prefix = "") {
         std::cout << "(0x" << lfPointer.size() << ")->";
         std::cout << std::dec;
 
-        // Get the type we're pointing at and make sure we're not about
-        // to recurse forever
         const auto& lfType = lfPointer.underlying_type();
         if (std::find(type_stack.begin(), type_stack.end(), &lfType) == type_stack.end()) {
             type_stack.push_back(&lfType);
