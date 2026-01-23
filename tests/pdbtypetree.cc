@@ -20,39 +20,73 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <vector>
 
 using namespace mspdb;
 
+static std::vector<const LF_TYPE*> type_stack;
+
 void recurse(const LF_TYPE& type, const std::string& prefix = "") {
+    if (std::find(type_stack.begin(), type_stack.end(), &type) == type_stack.end()) {
+        type_stack.push_back(&type);
+    } else {
+        std::cout << to_string(type.type()) <<"(stopping here - infinite recursive type)\n";
+        return;
+    }
     std::cout << to_string(type.type());
 
     switch (type.type()) {
     case LEAF_TYPE::LF_ARRAY:
         std::cout << "->";
         recurse(static_cast<const LF_ARRAY&>(type).element_type(), prefix);
+        type_stack.pop_back();
         return;
     case LEAF_TYPE::LF_BITFIELD:
         std::cout << "->";
         recurse(static_cast<const LF_BITFIELD&>(type).base_type(), prefix);
+        type_stack.pop_back();
         return;
     case LEAF_TYPE::LF_MEMBER:
         std::cout << "->";
         recurse(static_cast<const LF_MEMBER&>(type).index(), prefix);
+        type_stack.pop_back();
         return;
     case LEAF_TYPE::LF_MODIFIER: {
         const auto& lfModifier = static_cast<const LF_MODIFIER&>(type);
         std::cout << std::hex;
         std::cout << "(0x" << lfModifier.modifiers() << ")->";
         std::cout << std::dec;
-        recurse(lfModifier.modified_type(), prefix);
+
+        const auto& lfType = lfModifier.modified_type();
+        if (std::find(type_stack.begin(), type_stack.end(), &lfType) == type_stack.end()) {
+            type_stack.push_back(&lfType);
+        } else {
+            std::cout << to_string(type.type()) <<"(stopping here - infinite recursive modifier)\n";
+            return;
+        }
+
+        recurse(lfType, prefix);
+        type_stack.pop_back();
         return;
     }
     case LEAF_TYPE::LF_POINTER: {
         const auto& lfPointer = static_cast<const LF_POINTER&>(type);
+
         std::cout << std::hex;
         std::cout << "(0x" << lfPointer.size() << ")->";
         std::cout << std::dec;
-        recurse(lfPointer.underlying_type(), prefix);
+
+        // Get the type we're pointing at and make sure we're not about
+        // to recurse forever
+        const auto& lfType = lfPointer.underlying_type();
+        if (std::find(type_stack.begin(), type_stack.end(), &lfType) == type_stack.end()) {
+            type_stack.push_back(&lfType);
+        } else {
+            std::cout << to_string(type.type()) <<"(stopping here - infinite recursive pointer)\n";
+            return;
+        }
+        recurse(lfType, prefix);
+        type_stack.pop_back();
         return;
     }
     case LEAF_TYPE::LF_PROCEDURE: {
@@ -62,6 +96,7 @@ void recurse(const LF_TYPE& type, const std::string& prefix = "") {
         for (const LF_TYPE& member : lfProc.arg_list()) {
             std::cout << new_prefix;
             recurse(member, new_prefix);
+            type_stack.pop_back();
         }
         return;
     }
@@ -74,6 +109,7 @@ void recurse(const LF_TYPE& type, const std::string& prefix = "") {
             for (const LF_MEMBER& member : lfStruct.field_list()) {
                 std::cout << new_prefix;
                 recurse(member, new_prefix);
+                type_stack.pop_back();
             }
         }
         return;
@@ -86,6 +122,7 @@ void recurse(const LF_TYPE& type, const std::string& prefix = "") {
             for (const LF_MEMBER& member : lfStruct.field_list()) {
                 std::cout << new_prefix;
                 recurse(member, new_prefix);
+                type_stack.pop_back();
             }
         }
         return;
@@ -107,7 +144,6 @@ int main() {
     for (const LF_STRUCTURE& entry : tpi.structs()) {
         recurse(entry);
     }
-
     for (const LF_UNION& entry : tpi.unions()) {
         recurse(entry);
     }
