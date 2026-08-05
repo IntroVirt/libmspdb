@@ -160,7 +160,7 @@ std::unique_ptr<PDB> PDBStore::open_pdb(const std::string& pdb_filename,
 }
 
 PDBStore::PDBStore(const std::string& symbol_store_dir)
-    : PDBStore(symbol_store_dir, "http://msdl.microsoft.com/download/symbols/") {}
+    : PDBStore(symbol_store_dir, "https://msdl.microsoft.com/download/symbols/") {}
 
 PDBStore::PDBStore(const std::string& symbol_store_dir, const std::string& symbol_server_url)
     : pImpl(std::make_unique<IMPL>(symbol_store_dir, symbol_server_url)) {}
